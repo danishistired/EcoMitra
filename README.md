@@ -123,7 +123,7 @@ Simply open `index.html` in a browser to view reported waste locations.
 
 ### **2️⃣ Test the API with `cURL` (Optional)**  
 ```sh
-curl -X POST -F "image=@test.jpg" -F "latitude=12.34" -F "longitude=56.78" http://127.0.0.1:5000/upload
+curl -X POST -F "image=@path/to/test/image" -F "latitude=12.34" -F "longitude=56.78" http://192.168.x.x:5000/upload
 ```
 
 ---
@@ -162,7 +162,7 @@ ecomitra/
 ---
 
 ## 📜 **License**  
-This project is licensed under the **MIT License** and can be found [here](https://github.com/danishistired/EcoMitra/blob/main/LICENSE.md).  
+This project is licensed under the **GNU License** and can be found [here](https://github.com/danishistired/EcoMitra/blob/main/LICENSE.md).  
 
 ---
 
