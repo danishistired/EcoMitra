@@ -20,6 +20,33 @@ Waste mismanagement is a growing issue in urban areas. Many communities struggle
 
 # 🛠 **Dependencies & Setup**  
 
+Before running Ecomitra, ensure you have the following:
+
+📌 Backend Requirements
+Python 3.9+
+
+Flask == 2.2.2
+
+Flask-CORS == 3.0.10
+
+Pillow == 9.2.0
+
+Werkzeug == 2.2.2
+
+📌 Frontend Requirements
+HTML, CSS, JavaScript
+
+Leaflet.js (for mapping)
+
+Bootstrap 5
+
+📌 Other Tools
+Google Maps API (for address conversion)
+
+Geolocation API (for user location tracking)
+
+
+
 ## 📌 **Backend (Flask API)**  
 **Install dependencies:**  
 
