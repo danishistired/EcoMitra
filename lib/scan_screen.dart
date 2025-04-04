@@ -46,9 +46,8 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
@@ -108,22 +107,22 @@ class _ScanScreenState extends State<ScanScreen> {
                     ),
                     children: [
                       TileLayer(
-                        urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        urlTemplate:
+                            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                         subdomains: ['a', 'b', 'c'],
                       ),
                       MarkerLayer(
                         markers: [
                           Marker(
-  point: _currentPosition!,
-  width: 80,
-  height: 80,
-  child: Icon(
-    Icons.location_pin,
-    size: 40,
-    color: Colors.red,
-  ),
-),
-
+                            point: _currentPosition!,
+                            width: 80,
+                            height: 80,
+                            child: Icon(
+                              Icons.location_pin,
+                              size: 40,
+                              color: Colors.red,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -140,11 +139,22 @@ class _ScanScreenState extends State<ScanScreen> {
                       children: [
                         _image != null
                             ? Image.file(_image!, height: 150)
-                            : Icon(Icons.camera_alt, size: 100, color: Colors.grey),
+                            : Icon(Icons.camera_alt,
+                                size: 100, color: Colors.grey),
                         SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: _pickImage,
-                          child: Text('Capture Image'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () => _pickImage(ImageSource.camera),
+                              child: Text('Capture Image'),
+                            ),
+                            SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () => _pickImage(ImageSource.gallery),
+                              child: Text('Pick from Gallery'),
+                            ),
+                          ],
                         ),
                       ],
                     ),
