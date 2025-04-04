@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'scan_screen.dart';
 import 'history_screen.dart'; // Make sure to create this file
+import 'nearby_screen.dart'; // <-- Add this import
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final List<Widget> _screens = [
       _buildMainHome(context),
       HistoryScreen(), // <-- Trash tab
+      NearbyScreen(),
       Center(child: Text("Nearby Areas")),
       Center(child: Text("Profile")),
     ];
