@@ -7,6 +7,10 @@ import 'package:latlong2/latlong.dart';
 import 'dart:io';
 
 class ScanScreen extends StatefulWidget {
+  final Function(int) onPointsEarned;
+
+  ScanScreen({required this.onPointsEarned});
+
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
@@ -77,6 +81,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
     var response = await request.send();
     if (response.statusCode == 200) {
+      widget.onPointsEarned(200);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Image sent successfully!')),
       );

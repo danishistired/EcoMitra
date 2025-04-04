@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'scan_screen.dart';
-import 'history_screen.dart'; // Make sure to create this file
-import 'nearby_screen.dart'; // <-- Add this import
+import 'history_screen.dart';
+import 'nearby_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -15,12 +15,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  int _activePoints = 16500;
+
+  void _addPoints(int points) {
+    setState(() {
+      _activePoints += points;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
       _buildMainHome(context),
-      HistoryScreen(), // <-- Trash tab
+      HistoryScreen(),
       NearbyScreen(),
       Center(child: Text("Nearby Areas")),
       Center(child: Text("Profile")),
@@ -49,7 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top Green Section
           Container(
             padding: EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 20),
             decoration: BoxDecoration(
@@ -96,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "16500 Points",
+                        "$_activePoints Points",
                         style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
                       ),
                       Divider(),
@@ -144,15 +150,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 20),
-
-          // Scan Image Button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ScanScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => ScanScreen(onPointsEarned: _addPoints),
+                  ),
                 );
               },
               icon: Icon(Icons.camera_alt, color: Colors.white),
@@ -165,8 +171,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 10),
-
-          // XP Progress
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
@@ -186,8 +190,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 20),
-
-          // Action Buttons
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
