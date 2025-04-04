@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
 import 'scan_screen.dart';
 import 'history_screen.dart';
 import 'nearby_screen.dart';
@@ -34,7 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey[50],
+      appBar: AppBar(
+        title: Text("EcoMitra", style: GoogleFonts.montserrat(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.green.shade700,
+        elevation: 0,
+      ),
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -56,49 +62,46 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildMainHome(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHeader(),
-          const SizedBox(height: 20),
-          _buildScanButton(),
-          const SizedBox(height: 10),
-          _buildXPCard(),
-          const SizedBox(height: 20),
-          _buildActions(),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildWelcomeCard(),
+            const SizedBox(height: 20),
+            _buildPointsCard(),
+            const SizedBox(height: 20),
+            _buildActionGrid(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildWelcomeCard() {
     return Container(
-      padding: const EdgeInsets.only(top: 50, left: 20, right: 20, bottom: 30),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.green.shade800, Colors.green.shade600],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4)),
+          BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Welcome",
+          Text("Welcome Back,",
               style: GoogleFonts.montserrat(
                   fontSize: 18, color: Colors.white.withOpacity(0.9))),
           const SizedBox(height: 5),
           Text(widget.username,
               style: GoogleFonts.montserrat(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white)),
-          const SizedBox(height: 25),
-          _buildPointsCard(),
+                  fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
         ],
       ),
     );
@@ -106,72 +109,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildPointsCard() {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.white, Colors.grey.shade100],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 4)),
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text("Your Points",
+              style: GoogleFonts.montserrat(
+                  fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey[800])),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.star, color: Colors.orange),
-                  const SizedBox(width: 8),
-                  Text("Active Points",
-                      style: GoogleFonts.montserrat(
-                          fontSize: 16, fontWeight: FontWeight.w600)),
-                ],
+              Text(
+                "$_activePoints Points",
+                style: GoogleFonts.montserrat(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green.shade700,
+                ),
               ),
-              ElevatedButton.icon(
+              ElevatedButton(
                 onPressed: () {},
-                icon: const Icon(Icons.refresh, size: 18),
-                label: const Text("Refresh"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green.shade700,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          Text(
-            "$_activePoints Points",
-            style: GoogleFonts.montserrat(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.green.shade700,
-            ),
-          ),
-          const Divider(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildStat(
-                icon: LucideIcons.arrowDown,
-                label: "Points Earned",
-                value: "56,842",
-                color: Colors.red,
-              ),
-              _buildStat(
-                icon: LucideIcons.arrowUp,
-                label: "Points Spent",
-                value: "818,986",
-                color: Colors.green,
+                child: const Text("Refresh"),
               ),
             ],
           ),
@@ -180,112 +153,53 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildStat({required IconData icon, required String label, required String value, required Color color}) {
-    return Column(
+  Widget _buildActionGrid() {
+    return GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisSpacing: 16,
+      mainAxisSpacing: 16,
       children: [
-        Row(
-          children: [
-            Icon(icon, color: color, size: 18),
-            const SizedBox(width: 6),
-            Text(label,
-                style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 13)),
-          ],
-        ),
-        const SizedBox(height: 4),
-        Text(value,
-            style: GoogleFonts.montserrat(
-                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
-      ],
-    );
-  }
-
-  Widget _buildScanButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: ElevatedButton.icon(
-        onPressed: () {
+        _buildActionCard("Scan Image", Icons.camera_alt, Colors.blue.shade100, () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => ScanScreen(onPointsEarned: _addPoints),
             ),
           );
-        },
-        icon: const Icon(Icons.camera_alt),
-        label: const Text("Scan Image"),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green.shade700,
-          foregroundColor: Colors.white,
-          minimumSize: const Size(double.infinity, 50),
-          textStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
-        ),
-      ),
+        }),
+        _buildActionCard("Report Issue", Icons.report_problem, Colors.red.shade100, () {}),
+        _buildActionCard("Nearby Areas", Icons.location_on, Colors.orange.shade100, () {}),
+        _buildActionCard("View Alerts", Icons.notifications, Colors.purple.shade100, () {}),
+      ],
     );
   }
 
-  Widget _buildXPCard() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+  Widget _buildActionCard(String title, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.yellow.shade200, Colors.yellow.shade100],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(12),
+          color: color,
+          borderRadius: BorderRadius.circular(16),
           boxShadow: const [
             BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
           ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.star, color: Colors.orange),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                "80 XP more to become the savior of the nation!",
-                style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w500),
-              ),
+            Icon(icon, size: 36, color: Colors.black87),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.montserrat(
+                  fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black87),
             ),
-            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActions() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          _buildActionButton("Report a Cleanliness Issue", Icons.report_problem),
-          _buildActionButton("Check Nearby Areas", Icons.location_on),
-          _buildActionButton("View Alert", Icons.notifications),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButton(String text, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: ElevatedButton.icon(
-        onPressed: () {},
-        icon: Icon(icon),
-        label: Text(text),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green.shade700,
-          foregroundColor: Colors.white,
-          minimumSize: const Size(double.infinity, 50),
-          textStyle: GoogleFonts.montserrat(fontSize: 15, fontWeight: FontWeight.w500),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          shadowColor: Colors.black26,
-          elevation: 6,
         ),
       ),
     );
