@@ -73,7 +73,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('http://192.168.31.252:5000/upload'),
+      Uri.parse('https://tryingtohost.onrender.com/upload'),
     );
     request.files.add(await http.MultipartFile.fromPath('image', image.path));
     request.fields['latitude'] = position.latitude.toString();
