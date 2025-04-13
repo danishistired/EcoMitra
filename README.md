@@ -155,7 +155,6 @@ ecomitra/
 
 ## 👥 **Team Members**  
 - **Danish** – Flutter & Backend Developer  
-- **Prati 🌻** – Project Manager
 - **Varun** – Web Devleloper
 - **Rahul** – UI/UX Designer
 
