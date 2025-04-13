@@ -101,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
           top: 0,
           left: 0,
           right: 0,
-          height: 220,
+          height: 260, // Increased height to accommodate the full text
           child: Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
