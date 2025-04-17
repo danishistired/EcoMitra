@@ -7,6 +7,7 @@ import 'dart:ui';
 import 'scan_screen.dart';
 import 'history_screen.dart';
 import 'nearby_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       _buildMainHome(context),
       HistoryScreen(),
       NearbyScreen(),
-      const Center(child: Text("Profile")),
+      ProfileScreen(username: widget.username, activePoints: _activePoints),
     ];
 
     return Scaffold(
@@ -213,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 15),
+                
                 _buildActionGrid(),
                 const SizedBox(height: 25),
                 _buildEcoTipsSection(),
@@ -648,10 +649,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     ).animate().fadeIn(
           duration: const Duration(milliseconds: 500),
           delay: Duration(milliseconds: 300 + (tip['title'] as String).length * 20),
-
-
-
-
         );
   }
 }
