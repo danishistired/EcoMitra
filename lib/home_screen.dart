@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     color: Colors.black87,
                   ),
                 ),
-                
+                const SizedBox(height: 15),
                 _buildActionGrid(),
                 const SizedBox(height: 25),
                 _buildEcoTipsSection(),
@@ -460,6 +460,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       crossAxisSpacing: 15,
       mainAxisSpacing: 15,
       childAspectRatio: 1.1,
+      padding: EdgeInsets.zero,
       children: [
         _buildActionCard(
           "Scan Waste",
@@ -487,7 +488,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           LucideIcons.mapPin,
           const Color(0xFFFFB74D),
           const Color(0xFFFFF8E1),
-          () {},
+          () {Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NearbyScreen(),
+              ),
+            );},
         ),
         _buildActionCard(
           "View Alerts",
